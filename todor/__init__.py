@@ -1,5 +1,5 @@
-from flask import Flask
-from . import todo
+from flask import Flask, render_template
+from . import todo, auth
 
 def create_app():
 
@@ -13,10 +13,12 @@ def create_app():
     
     # Registrar Blueprint
     app.register_blueprint(todo.bp)
+    app.register_blueprint(auth.bp)
+    
     
     @app.route('/')
     def index():
-        return 'Hola Mundo'
+        return render_template('index.html')
     
     return app
 
