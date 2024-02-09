@@ -1,4 +1,5 @@
 from flask import Flask
+from . import todo
 
 def create_app():
 
@@ -9,6 +10,9 @@ def create_app():
         DEBUG = True,
         SECRET_KEY = 'dev'
     )
+    
+    # Registrar Blueprint
+    app.register_blueprint(todo.bp)
     
     @app.route('/')
     def index():
