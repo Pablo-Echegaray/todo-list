@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from . import todo, auth
+#from . import todo, auth
 
 # create the extension
 db = SQLAlchemy()
@@ -13,15 +13,16 @@ def create_app():
     app.config.from_mapping(
         DEBUG = True,
         SECRET_KEY = 'dev',
-        SQLALCHEMY_DATABASE_URI= 'sqlite:///todolist.db'
-        
+        SQLALCHEMY_DATABASE_URI= 'sqlite:///todolist.db'  
     )
     
-    # Inicialize the app with the extension
+    # Initialize the app with the extension
     db.init_app(app)
     
     # Registrar Blueprint
+    from . import todo
     app.register_blueprint(todo.bp)
+    from . import auth
     app.register_blueprint(auth.bp)
     
     

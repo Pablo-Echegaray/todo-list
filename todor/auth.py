@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template
+# Con este import hemos migrado nuestros modelos a la db
+from . import models
 
 # Vistas con Blueprint.
 
