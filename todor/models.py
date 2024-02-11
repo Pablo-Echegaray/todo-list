@@ -21,8 +21,8 @@ class Todo(db.Model):
     
     def __init__(self, created_by, title, desc, state = False):
         self.created_by = created_by
-        self.title = title,
-        self.desc = desc,
+        self.title = title
+        self.desc = desc
         self.state = state
         
     def __repr__(self):
