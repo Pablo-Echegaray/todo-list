@@ -6,6 +6,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 #from . import models
 from .models import User
 from todor import db
+# import para implementar que se requiera iniciar sesión para acceder a todo/list
+import functools
 
 # Vistas con Blueprint.
 
@@ -65,4 +67,13 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))  
+    return redirect(url_for('index'))
+
+# Atenticar que el usuario esté logueado para poder acceder a la vista de todo/list. Luego aplicar en las vistas (todo.py)
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+        return view(**kwargs)
+    return wrapped_view
