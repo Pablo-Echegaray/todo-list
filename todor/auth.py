@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, request, url_for, redirect, flash
+from flask import Blueprint, render_template, request, url_for, redirect, flash, session, g
+# Módulo 'session' nos ayudará en la parte de inicio de sesión, guardando el usuario que ha iniciado una sesión para saber si un usuario ha o no iniciado una sesión.
+# Object 'g' se utiliza para guardar cualquier valor. Va a estar presente en todas partes de nuestra aplicación. Se utiliza para almacenar algún tipo de valor como cookies por ejemplo.
 from werkzeug.security import generate_password_hash, check_password_hash
 # Con este import hemos migrado nuestros modelos a la db
 #from . import models
@@ -27,6 +29,25 @@ def register():
         flash(error)
     return render_template('auth/register.html')
 
-@bp.route('/login')
+@bp.route('/login', methods = ('GET', 'POST'))
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        error = None
+        # Validar datos
+        user = User.query.filter_by(username = username).first()
+        if user == None:
+            error = 'Nombre de usuario incorrecto.'
+        elif not check_password_hash(user.password, password):
+            error = 'Contraseña incorrecta.'
+            
+        # Iniciar sesión
+        if error is None:
+            session.clear()
+            session['user_id'] = user.id 
+            return redirect(url_for('todo.index'))
+        
+        flash(error)
     return render_template('auth/login.html')
