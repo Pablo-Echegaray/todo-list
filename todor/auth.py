@@ -60,4 +60,9 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.get_or_404(user_id)    
+        g.user = User.query.get_or_404(user_id)
+        
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))  
