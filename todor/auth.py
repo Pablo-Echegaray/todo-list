@@ -46,8 +46,18 @@ def login():
         # Iniciar sesión
         if error is None:
             session.clear()
-            session['user_id'] = user.id 
+            session['user_id'] = user.id
             return redirect(url_for('todo.index'))
         
         flash(error)
     return render_template('auth/login.html')
+
+# Este decorador de bp hace que esta función (función que verifica si alguien ha iniciado o no sesión) se ejecute primero en cada petición.
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+    
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = User.query.get_or_404(user_id)    
