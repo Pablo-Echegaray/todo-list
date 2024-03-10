@@ -71,3 +71,6 @@ def create_app():
 # 10- Obtener un registro en particular Todo.query.get(id_registro):
    # 10.1- todo = Todo.query.get(2): <Todo: Curso de Python>
 # 11- Salir de la terminal: exit()   
+
+# user: pabloeche
+# contraseña: hola1234
